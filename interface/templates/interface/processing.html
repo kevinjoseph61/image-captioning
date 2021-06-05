@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{%block title%}Home{% endblock %}
+  
+{% block navbar %}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/predict">Predict</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link active">Processing Requests</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/api-end">API Endpoint</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/tutorial">Tutorial</a>
+		  </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/logout">Logout</a>
+      </li>
+      <li class="nav-item">
+      	<a class="nav-link active"><b>Hello, {{ user.username }}</b></a>
+      </li>
+	</ul>
+{% endblock %}
+
+{% block body %}
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Processing Requests</h1> 
+    </div>
+  </div>
+
+  <div class="container">
+    {% if requests %}
+      <table class = "table">
+        <tr>
+          <th>Request ID</th>
+          <th>Request User</th>
+          <th>State</th>
+          <th>Result</th>
+        </tr>
+        {% for req in requests %}
+          <tr>
+            <td>{{req.id}}</td>
+            <td>{{req.user}}</td>
+            <td>{{req.get_status_display}}</td>
+            <td>{% if req.status == 3 %} <a class="btn btn-success" href='/result/{{req.pk}}'>View Results</a>{% else %} <a class="btn btn-info" >Not ready yet</a> {% endif %}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      No requests have been submitted yet
+    {% endif %}
+    <div class="row">
+      
+        
+    </div> 
+  </div>
+  
+
+{% endblock %}

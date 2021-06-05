@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{%block title%}Home{% endblock %}
+  
+{% block navbar %}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/predict">Predict</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/processing">Processing Requests</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/api-end">API Endpoint</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/tutorial">Tutorial</a>
+		  </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/logout">Logout</a>
+      </li>
+      <li class="nav-item">
+      	<a class="nav-link active"><b>Hello, {{ user.username }}</b></a>
+      </li>
+	</ul>
+{% endblock %}
+
+{% block body %}
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Request Result</h1> 
+    </div>
+  </div>
+
+  <div class="container">
+    {% if result %}
+      <table class = "table">
+        <tr>
+          <th>Image</th>
+          <th>Sl No.</th>
+          <th>Caption Generated</th>
+          <th>Probability</th>
+        </tr>
+        {% for res in result %}
+          <tr>
+            <td rowspan="3"><img src="{{res.0}}"></td>
+            <td>1</td>
+            <td>{{res.1.0.0}}</td>
+            <td>{{res.1.0.1}}</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>{{res.1.1.0}}</td>
+            <td>{{res.1.1.1}}</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>{{res.1.2.0}}</td>
+            <td>{{res.1.2.1}}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      No results have been generated
+    {% endif %}
+    <div class="row">
+      
+        
+    </div> 
+  </div>
+  
+
+{% endblock %}

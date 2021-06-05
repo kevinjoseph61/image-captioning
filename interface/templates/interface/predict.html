@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{%block title%}Home{% endblock %}
+
+{% block cdn %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.css" integrity="sha512-jU/7UFiaW5UBGODEopEqnbIAHOI8fO6T99m7Tsmqs2gkdujByJfkCbbfPSN4Wlqlb9TGnsuC0YgUgWkRBK7B9A==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js" integrity="sha512-VQQXLthlZQO00P+uEu4mJ4G4OAgqTtKG1hri56kQY1DtdLeIqhKUp9W/lllDDu3uN3SnUNawpW7lBda8+dSi7w==" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block css %}
+    .container1{
+    margin: 0 auto;
+    width: 50%;
+   }
+   
+   .content{
+    margin: 0 auto;
+   }
+   .content span{
+    width: 250px;
+   }
+   
+   .dz-message{
+    text-align: center;
+    font-size: 28px;
+   }
+{% endblock %}
+  
+{% block navbar %}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active">Predict</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/processing">Processing Requests</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/api-end">API Endpoint</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/tutorial">Tutorial</a>
+		  </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/logout">Logout</a>
+      </li>
+      <li class="nav-item">
+      	<a class="nav-link active"><b>Hello, {{ user.username }}</b></a>
+      </li>
+	</ul>
+{% endblock %}
+
+{% block body %}
+  <script>
+        Dropzone.options.videoinput = {
+            paramName: "file",
+            maxFiles: 10,
+            maxFilesize: 10, // MB
+            acceptedFiles: "image/jpeg",
+            uploadMultiple: true,
+            init: function() {
+                this.on("success", function (file, response) {   
+                    $("#modal-body").html(`Your upload was successful and is now being processed by the backend programs. You can view processing requests page on the processing requests page. The request ID is <b>${response.id}</b>`)
+                    $("#predictModal").modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    })
+                })
+            },
+        };
+  </script>
+  <div class="modal fade" id="predictModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-title">Success</h4>
+        </div>
+        <div class="modal-body">
+          <p id="modal-body">Your upload was successful and is now being processed by the backend programs. You can view processing requests page on the processing requests page</p>
+        </div>
+        <div class="modal-footer">
+          <a href="/processing" class="btn btn-success">Redirect to Processing Requests Page</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Image Caption Generator <img class="mb-1" alt="" width="150" height="110" src="/static/trajec-main.png"></h1> 
+    </div>
+  </div>
+
+  <div class="container1">
+    <div class="content">
+        <form method="POST" action="/predict/" id="videoinput" name="form1" class="dropzone">
+            {% csrf_token %}
+            <div class="dz-message" data-dz-message><span>Drop upto 10 image files here / click to browse to upload and predict</span></div>
+        </form>
+    </div> 
+    <hr>
+  </div>
+  
+
+{% endblock %}
