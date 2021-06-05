@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-*@-q6#4!=mzq_xo630e69pinb91=&@@z78wf-_try^ds^yjqml
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['image-cap-gen.azurewebsites.net']
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
