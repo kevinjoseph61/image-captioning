@@ -1,17 +1,19 @@
-from os import path
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.views import View
 from django.core.files.storage import default_storage
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import Request, Image, Caption
+from secrets import token_urlsafe
+from .models import Request, Image, Caption, APIKey
 from os.path import join
 from threading import Thread
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .model import model_thread_target
+from .model import model_thread_target, apiModelRequest
 from image_cap.settings import BASE_DIR
 
 
@@ -59,6 +61,51 @@ class predict(LoginRequiredMixin, View):
         t = Thread(target=model_thread_target, args=[req.pk, filenames], daemon=True)
         t.start()
         return JsonResponse({'success':True, "id": req.pk})
+
+@method_decorator(csrf_exempt, name='dispatch')
+class API(View):
+    def get(self, request):
+        return JsonResponse({'error':'POST your image to this url with your API key'})
+    def post(self, request):
+        if "key" not in request.POST:
+            return JsonResponse({'error':'Include a generated API key!'})
+        try:
+            APIKey.objects.get(key=request.POST["key"])
+        except:
+            return JsonResponse({'error':'This is not a valid API key!'})
+        if "image" not in request.FILES:
+            return JsonResponse({'error':'Include an image in POST'})
+        print(request.FILES["image"])
+        if ('jpeg' not in str(request.FILES["image"])) and ('jpg' not in str(request.FILES["image"])):
+            return JsonResponse({'error':'Only JPG files allowed!'})
+        file_name = default_storage.save('api.jpg', request.FILES["image"])
+        imageLocation = join(BASE_DIR,'media',file_name)
+        captions = apiModelRequest(imageLocation)
+        return JsonResponse({'Captions': captions})
+
+class apiEndpoint(LoginRequiredMixin, View):
+    def get(self, request):
+        try:
+            key = APIKey.objects.get(username=request.user.username)
+        except:
+            key = False
+        print (request.user.username)
+        if key:
+            return render(request, "interface/api-end.html", {"key":key.key})
+        else:
+            return render(request, "interface/api-end.html")
+    def post(self, request):
+        try:
+            key = APIKey.objects.get(username=request.user.username)
+        except:
+            key = APIKey(username=request.user.username, key=token_urlsafe(20))
+            key.save()
+        print(key.key)
+        return HttpResponseRedirect(reverse('api-end'))
+        
+@login_required
+def tutorial(request):
+    return render(request, "interface/tutorial.html")
 
 @login_required
 def processing(request):

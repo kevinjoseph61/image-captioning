@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{%block title%}Home{% endblock %}
+  
+{% block navbar %}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/predict">Home </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/predict">Predict</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/processing">Processing Requests</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/api-end">API Endpoint</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/tutorial">Tutorial</a>
+		  </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/logout">Logout</a>
+      </li>
+      <li class="nav-item">
+      	<a class="nav-link active"><b>Hello, {{ user.username }}</b></a>
+      </li>
+	</ul>
+{% endblock %}
+
+{% block body %}
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Tutorial</h1> 
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+        <h2>Predict captions for your images</h2>
+    </div>
+    <div class="row m-2">
+        <div class="col">
+            <div class="row"><p>Navigate to the predict page by using the navigation bar or just click <a class="btn btn-secondary" href="/predict" role="button">Predict</a> </p> </div>
+            <div class="row"><img src="/static/predict.png"></div>
+        </div>
+        
+    </div> 
+    <div class="row m-2">
+        <div class="col">
+            <div class="row"><p>You can drag images / click to upload upto 10 images in one request</p></div>
+            <div class="row"><img src="/static/open.png" width="650"></div>
+        </div>
+    </div> 
+    <div class="row m-2">
+        <div class="col">
+            <div class="row"><p>Once uploaded, a success message appears indicating your request ID that will help track your request and click on the green button to redirect to the processing page</p></div>
+            <div class="row"><img src="/static/success.png" width="650"></div>
+        </div>
+    </div> 
+    <div class="row m-2">
+        <div class="col">
+            <div class="row"><p>On the processing page, wait for your request to change its status from processing to completed</p></div>
+            <div class="row"><img src="/static/wait.png" height="75"></div>
+            <div class="row"><img src="/static/done.png" height="75"></div>
+        </div>
+    </div> 
+    <div class="row m-2">
+        <div class="col">
+            <div class="row"><p>Once the view results has been enabled, you will be navigated to the results page where you can view the top 3 captions predicted by the model in order of their probability</p></div>
+            <div class="row"><img src="/static/result.png" width="650"></div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <h2>Use the API for your own applications</h2>
+    </div>
+    <div class="col">
+        <div class="row"><p>Go to the API Endpoint page from the navigation bar or click <a class="btn btn-secondary" href="/api-end" role="button">API Endpoint</a>, create an API key and follow furthur instructions</p></div>
+    </div>
+  </div>
+  
+
+{% endblock %}

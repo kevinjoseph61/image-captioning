@@ -66,3 +66,29 @@ def model_thread_target(requestID, input_image_list):
                 cap.save()
     req.status = 3
     req.save()
+
+def apiModelRequest(input_image_file):
+    tf.logging.set_verbosity(tf.logging.FATAL)
+    checkpoint_path = path.join(BASE_DIR, "interface", "model", "model.ckpt-first")
+    vocab_file = path.join(BASE_DIR, "interface", "model", "words_cnt.txt")
+    g = tf.Graph()
+    with g.as_default():
+        model = Inference()
+        restore_fn = model.build_graph_from_config(ModelConfig(), checkpoint_path)
+    g.finalize()
+    vocab = Vocabulary(vocab_file)
+    images = []
+    captionlist = []
+    filename = tf.gfile.Glob(input_image_file)[0]
+    with tf.Session(graph=g) as sess:
+        restore_fn(sess)
+        generator = CaptionGenerator(model, vocab)
+        with tf.gfile.GFile(filename, "rb") as f:
+            image = f.read()
+        captions = generator.beam_search(sess, image)
+        for i, caption in enumerate(captions):
+            sentence = [vocab.id_to_word(w) for w in caption.sentence[1:-1]]
+            sentence = " ".join(sentence)
+            print("  %d) %s (p=%f)" % (i, sentence, exp(caption.logprob)))
+            captionlist.append([sentence, str(exp(caption.logprob))])
+    return captionlist
