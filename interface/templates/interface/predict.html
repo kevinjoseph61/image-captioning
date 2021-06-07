@@ -59,7 +59,7 @@
         Dropzone.options.videoinput = {
             paramName: "file",
             maxFiles: 10,
-            maxFilesize: 10, // MB
+            parallelUploads: 10,
             acceptedFiles: "image/jpeg",
             uploadMultiple: true,
             init: function() {

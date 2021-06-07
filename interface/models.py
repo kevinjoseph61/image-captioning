@@ -19,3 +19,7 @@ class Caption(models.Model):
     image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name="caption")
     caption = models.CharField(max_length=100)
     probability = models.DecimalField(max_digits=10, decimal_places=9)
+
+class APIKey(models.Model):
+    username = models.CharField(max_length=50)
+    key = models.CharField(max_length=50)

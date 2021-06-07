@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{%block title%}Home{% endblock %}
+  
+{% block navbar %}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/predict">Home </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/predict">Predict</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/processing">Processing Requests</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/api-end">API Endpoint</a>
+		  </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/tutorial">Tutorial</a>
+		  </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts/logout">Logout</a>
+      </li>
+      <li class="nav-item">
+      	<a class="nav-link active"><b>Hello, {{ user.username }}</b></a>
+      </li>
+	</ul>
+{% endblock %}
+
+{% block body %}
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">API Endpoint</h1> 
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+        <h2>Use the API Endpoint</h2>
+    </div>
+    <div class="row m-2">
+        <div class="col">
+            {% if key %}
+            <div class="row"><p>Your API Key is <pre class="m-2"><code>{{key}}</code></pre></p> </div>
+            {% else %}
+            <form action = "{% url 'api-end' %}" method = "POST" id = "api">
+                {% csrf_token %} 
+                <div class="row"><p>Generate an API Key <a class="btn btn-secondary btn-success" href="#" role="button" onclick="document.getElementById('api').submit();return false;">Generate</a></p> </div>    
+            </form>
+            {% endif %}
+        </div>
+    </div> 
+    <div class="row m-2">
+        <div class="col">
+            <div class="row"><p>Use your key and POST your image as form data with the help of Postman or any other similar helper to the link <pre class="m-2"><code>image-caption-generator.azurewebsites.net/api/</code></pre></p></div>
+            <div class="row"><img src="/static/api.png" height="400"></div>
+        </div>
+    </div>
+    <div class="row m-2">
+        <div class="col">
+            <div class="row"><p>Add your image with the key "image" and your API key with the key "key" to ensure that it works correctly</p></div>
+        </div>
+    </div>
+  </div>
+  
+
+{% endblock %}

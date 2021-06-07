@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from interface.views import index, register, predict, processing, result
+from interface.views import index, register, predict, processing, result, tutorial, API, apiEndpoint
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -25,6 +25,9 @@ urlpatterns = [
     path('', index, name='home'),
     path('register/', register.as_view(), name = 'register'),
     path('predict/', predict.as_view(), name = 'predict'),
+    path('api/', API.as_view(), name = 'api'),
     path('processing/', processing, name='processing'),
+    path('api-end/', apiEndpoint.as_view(), name='api-end'),
+    path('tutorial/', tutorial, name='tutorial'),
     path("result/<int:ID>", result, name="result"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
