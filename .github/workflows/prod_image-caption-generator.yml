@@ -29,7 +29,7 @@ jobs:
         platform: python
         platform-version: '3.7'
         
-    - name: Downloading model files
+    - name: Download model files
       run: |
         bash setup.sh
 
@@ -38,5 +38,5 @@ jobs:
       with:
         app-name: image-caption-generator
         slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_99062D5860904E17A8FAC3B7ACF19119 }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5F40BB31D90440678082D95EF955E594 }}
 
