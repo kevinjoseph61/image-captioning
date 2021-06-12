@@ -32,6 +32,10 @@ jobs:
     - name: Download model files
       run: |
         bash setup.sh
+    
+    - name: Run tests
+      run: |
+        python manage.py test
 
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2
